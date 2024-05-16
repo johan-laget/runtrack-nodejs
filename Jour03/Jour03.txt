@@ -1,0 +1,197 @@
+Job 1 :
+
+    show dbs
+
+Job 2 :
+
+    use Shop
+
+Job 3 :
+
+    db.insertOne (
+        {
+            name : "Chaussures",
+            description : "une paire de chaussures",
+            price : 35,
+            quantity : 120
+        }
+    )
+
+Job 4 :
+
+    db.insertMany (
+        {
+            name : "pantalon noir",
+            description : "un pantalon noir",
+            price : 14.99,
+            quantity : 12
+        },
+        {
+            name : "chaussettes",
+            description : "chaussettes cool",
+            price : 6,
+            quantity : 6
+        }
+    )
+
+Job 5 :
+
+    db.category.insertMany ([
+        {
+            name : "gants",
+            description : "gants cool",
+            price : 9.99,
+            quantity : 25
+        },
+        {
+            name : "vestes en cuir",
+            description : "vestes en cuir véritable",
+            price : 149.99,
+            quantity : 40
+        },
+        {
+            name : "chapeaux",
+            description : "chapeaux collection couleurs",
+            price : 15,
+            quantity : 60
+        }
+    ])
+
+Job 6 :
+
+    show collections
+
+Job 7 :
+
+    db.category.find()
+
+Job 8 :
+
+    db.category.find().limit(2)
+
+Job 9 :
+
+    db.category.find().sort({ price : 1})
+
+Job 10 :
+
+    db.category.find().sort({ price : -1})
+
+Job 11 :
+
+    db.category.find(
+        {
+        price : { $gt : 5},
+        quantity : { $lt : 100}
+    })
+
+Job 12 : 
+
+    db.category.find({
+        $or: [
+        {price : { $gt : 14.99}},
+        {quantity : { $gt : 100}}
+        ]
+    })
+
+Job 13 :
+
+    db.category.find({}, { _id : 0})
+
+Job 14 :
+
+    db.category.find(
+        { 
+            _id : ObjectId('66449f80796fca2c12171a6e')
+        }
+    )
+
+Job 15 :
+
+    db.category.updateOne(
+        {name:"gants"},
+        { 
+            $set: {name : "gants enfants"}
+        }
+    )
+
+Job 16 :
+
+    db.product.updateMany(
+    { name: "chaussure" },
+    { $set: { category_id: ObjectId("66448f22c38fb2aee1f1c0ee") } }
+    )
+
+
+    db.product.updateMany(
+    { name: "pantalon noir" },
+    { $set: { category_id: ObjectId("66448f22c38fb2aee1f1c0ef") } }
+    )
+
+
+    db.product.updateMany(
+    { name: "chaussettes" },
+    { $set: { category_id: ObjectId("66448f22c38fb2aee1f1c0f0") } }
+    )
+
+    db.product.aggregate([
+    {
+        $lookup: {
+        from: "category",
+        localField: "category_id",
+        foreignField: "_id",
+        as: "category_info"
+        }
+    },
+    {
+        $unwind: "$category_info"
+    },
+    {
+        $project: {
+        _id: 1,
+        name: 1,
+        description: 1,
+        price: 1,
+        quantity: 1,
+        category_name: "$category_info.name",
+        category_description: "$category_info.description"
+        }
+    }
+    ]).pretty()
+
+
+Job 17 :
+
+
+    db.product.aggregate([
+    {
+        $group: {
+        _id: "$category_id",
+        count: { $sum: 1 }
+        }
+    },
+    {
+        $sort: { count: 1 }
+    },
+    {
+        $limit: 1
+    },
+    {
+        $lookup: {
+        from: "category",
+        localField: "_id",
+        foreignField: "_id",
+        as: "category_info"
+        }
+    },
+    {
+        $unwind: "$category_info"
+    },
+    {
+        $project: {
+        _id: 1,
+        name: "$category_info.name",
+        count: 1
+        }
+    }
+    ]).pretty()
