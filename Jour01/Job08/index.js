@@ -1,9 +1,16 @@
 const fs = require('fs');
 
-fs.readFile('data.txt', 'utf8', (err, data) => {
-    let newContent = '';
-    for (let i = 0; i < data.length; i += 2) {
-        newContent += data[i];
+fs.readFile('data.txt', 'utf8', function(err, data) {
+    if (err) {
+        console.error('Erreur lors de la lecture du fichier:', err);
+        return;
     }
-    console.log("Une lettre sur deux du fichier data.txt :", newContent);
+
+    const content = data;
+    
+    let filteredContent = '';
+    for (let i = 0; i < content.length; i += 2) {
+        filteredContent += content[i];
+    }
+    console.log(`Une lettre sur deux du fichier data.txt  : ${filteredContent}`);
 });

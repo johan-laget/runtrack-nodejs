@@ -1,23 +1,22 @@
 const http = require('http');
 const fs = require('fs');
+const path = require('path');
 
-const host = 'localhost';
-const port = 8888;
+const hostname = '127.0.0.1';
+const port = 3000;
 
-const requestListener = function (req, res) {
+const server = http.createServer((req, res) => {
+  fs.readFile(path.join(__dirname, 'index.html'), (err, data) => {
+    if (err) {
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Erreur du serveur');
+    } else {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(data);
+    }
+  });
+});
 
-    fs.readFile(__dirname + '/index.html', (err, data) => {
-        if (err) {
-            res.writeHead(500);
-            res.end('Error loading index.html');
-            return;
-        }
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(data);
-    });
-};
-
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
+server.listen(port, hostname, () => {
+  console.log(`Serveur démarré sur http://${hostname}:${port}/`);
 });

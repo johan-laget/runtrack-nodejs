@@ -1,0 +1,333 @@
+Job 02 :
+
+show databases
+admin   40.00 KiB
+config  60.00 KiB
+local   40.00 KiB
+
+Job 03 :
+
+use shop
+switched to db shop
+db.product.insertOne({
+ name: "chaussure",
+  description: "une paire de chaussures",
+  price: 35,
+  quantity: 120
+})
+
+affiche : {
+  acknowledged: true,
+  insertedId: ObjectId('66448c71c38fb2aee1f1c0eb')
+}
+
+Job 04 :
+
+db.product.insertMany([
+  { name: "pantalon noir",
+  description: "un pantalon noir",
+  price: 14.99,
+  quantity: 12 
+},
+  {
+name: "chaussettes",
+  description: "chaussettes cool !",
+  price: 6,
+  quantity: 6
+  }
+])
+
+affiche : {
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66448e5bc38fb2aee1f1c0ec'),
+    '1': ObjectId('66448e5bc38fb2aee1f1c0ed')
+  }
+}
+
+Job 05 :
+
+db.category.insertMany ([
+  { name: "chaussures", description: "Différents types de chaussures" },
+  { name: "vêtements", description: "Vêtements pour hommes, femmes et enfants" },
+  { name: "accessoires", description: "Accessoires de mode et utilitaires" }
+])
+
+affiche : {
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('66448f22c38fb2aee1f1c0ee'),
+    '1': ObjectId('66448f22c38fb2aee1f1c0ef'),
+    '2': ObjectId('66448f22c38fb2aee1f1c0f0')
+  }
+}
+
+Job 06 :
+
+show collections
+category
+product
+
+Job 07 :
+
+db.category.find()
+
+affiche : {
+  _id: ObjectId('66448f22c38fb2aee1f1c0ee'),
+  name: 'chaussures',
+  description: 'Différents types de chaussures'
+}
+
+{
+  _id: ObjectId('66448f22c38fb2aee1f1c0ef'),
+  name: 'vêtements',
+  description: 'Vêtements pour hommes, femmes et enfants'
+}
+
+{
+  _id: ObjectId('66448f22c38fb2aee1f1c0f0'),
+  name: 'accessoires',
+  description: 'Accessoires de mode et utilitaires'
+}
+
+Job 08 :
+
+db.category.find().limit(2)
+
+Affiche : {
+  _id: ObjectId('66448f22c38fb2aee1f1c0ee'),
+  name: 'chaussures',
+  description: 'Différents types de chaussures'
+}
+
+{
+  _id: ObjectId('66448f22c38fb2aee1f1c0ef'),
+  name: 'vêtements',
+  description: 'Vêtements pour hommes, femmes et enfants'
+}
+
+Job 09 : 
+
+db.product.find().sort({ price: 1 }).pretty()
+
+affiche : 
+
+{
+  _id: ObjectId('66448e5bc38fb2aee1f1c0ed'),
+  name: 'chaussettes',
+  description: 'chaussettes cool !',
+  price: 6,
+  quantity: 6
+}
+{
+  _id: ObjectId('66448e5bc38fb2aee1f1c0ec'),
+  name: 'pantalon noir',
+  description: 'un pantalon noir',
+  price: 14.99,
+  quantity: 12
+}
+{
+  _id: ObjectId('66448c71c38fb2aee1f1c0eb'),
+  name: 'chaussure',
+  description: 'une paire de chaussures',
+  price: 35,
+  quantity: 120
+}
+
+Job 10 :
+
+db.product.find().sort({ price: -1 }).pretty()
+
+affiche : 
+
+{
+  _id: ObjectId('66448c71c38fb2aee1f1c0eb'),
+  name: 'chaussure',
+  description: 'une paire de chaussures',
+  price: 35,
+  quantity: 120
+}
+{
+  _id: ObjectId('66448e5bc38fb2aee1f1c0ec'),
+  name: 'pantalon noir',
+  description: 'un pantalon noir',
+  price: 14.99,
+  quantity: 12
+}
+{
+  _id: ObjectId('66448e5bc38fb2aee1f1c0ed'),
+  name: 'chaussettes',
+  description: 'chaussettes cool !',
+  price: 6,
+  quantity: 6
+}
+
+Job 11 :
+
+db.product.find({
+  price: { $gt: 5 },
+  quantity: { $lt: 100 }
+}).pretty()
+
+Job 12 :
+
+db.product.find({
+  $or: [
+    { price: { $gt: 14.99 } },
+    { quantity: { $gt: 100 } }
+  ]
+}).pretty()
+
+Job 13 :
+
+db.product.find({}, { _id: 0 }).pretty()
+
+Job 14 :
+
+db.product.find({ _id: ObjectId('66448c71c38fb2aee1f1c0eb') }).pretty()
+
+Job 15 :
+
+db.category.updateOne(
+  { name: "accessoires" },
+  { $set: { name: "accessoires pour tous" } }
+)
+
+Job 16 :
+
+db.product.updateMany(
+  { name: "chaussure" },
+  { $set: { category_id: ObjectId("66448f22c38fb2aee1f1c0ee") } }
+)
+
+
+db.product.updateMany(
+  { name: "pantalon noir" },
+  { $set: { category_id: ObjectId("66448f22c38fb2aee1f1c0ef") } }
+)
+
+
+db.product.updateMany(
+  { name: "chaussettes" },
+  { $set: { category_id: ObjectId("66448f22c38fb2aee1f1c0f0") } }
+)
+
+db.product.aggregate([
+  {
+    $lookup: {
+      from: "category",
+      localField: "category_id",
+      foreignField: "_id",
+      as: "category_info"
+    }
+  },
+  {
+    $unwind: "$category_info"
+  },
+  {
+    $project: {
+      _id: 1,
+      name: 1,
+      description: 1,
+      price: 1,
+      quantity: 1,
+      category_name: "$category_info.name",
+      category_description: "$category_info.description"
+    }
+  }
+]).pretty()
+
+
+Job 17 :
+
+
+db.product.aggregate([
+  {
+    $group: {
+      _id: "$category_id",
+      count: { $sum: 1 }
+    }
+  },
+  {
+    $sort: { count: 1 }
+  },
+  {
+    $limit: 1
+  },
+  {
+    $lookup: {
+      from: "category",
+      localField: "_id",
+      foreignField: "_id",
+      as: "category_info"
+    }
+  },
+  {
+    $unwind: "$category_info"
+  },
+  {
+    $project: {
+      _id: 1,
+      name: "$category_info.name",
+      count: 1
+    }
+  }
+]).pretty()
+
+
+
+
+
+
+
+
+
+
+
+
+
+db.category.find().pretty()
+{
+  _id: ObjectId('66448f22c38fb2aee1f1c0ee'),
+  name: 'chaussures',
+  description: 'Différents types de chaussures'
+}
+{
+  _id: ObjectId('66448f22c38fb2aee1f1c0ef'),
+  name: 'vêtements',
+  description: 'Vêtements pour hommes, femmes et enfants'
+}
+{
+  _id: ObjectId('66448f22c38fb2aee1f1c0f0'),
+  name: 'accessoires pour tous',
+  description: 'Accessoires de mode et utilitaires'
+}
+
+db.product.find().pretty()
+
+{
+  _id: ObjectId('66448c71c38fb2aee1f1c0eb'),
+  name: 'chaussure',
+  description: 'une paire de chaussures',
+  price: 35,
+  quantity: 120,
+  category_id: ObjectId('66448c71c38fb2aee1f1c0eb')
+}
+{
+  _id: ObjectId('66448e5bc38fb2aee1f1c0ec'),
+  name: 'pantalon noir',
+  description: 'un pantalon noir',
+  price: 14.99,
+  quantity: 12,
+  category_id: ObjectId('66448e5bc38fb2aee1f1c0ec')
+}
+{
+  _id: ObjectId('66448e5bc38fb2aee1f1c0ed'),
+  name: 'chaussettes',
+  description: 'chaussettes cool !',
+  price: 6,
+  quantity: 6,
+  category_id: ObjectId('66448e5bc38fb2aee1f1c0ed')
+}
+
+

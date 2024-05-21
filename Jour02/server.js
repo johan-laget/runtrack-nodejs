@@ -1,9 +1,15 @@
-const express = require('express');
-const app = express();
+// server.js
+const http = require('http');
+const { handleRequests } = require('./route');
 
-app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
-const routes = require('./routes');
-app.use('/tasks', routes);
+const server = http.createServer(handleRequests);
 
-module.exports = app;
+const startServer = () => {
+    server.listen(PORT, () => {
+        console.log(`Serveur démarré sur le port ${PORT}`);
+    });
+};
+
+module.exports = { startServer };

@@ -1,1 +1,64 @@
-[{"id":1,"title":"Acheter du lait","description":"Aller au supermarché pour acheter du lait","completed":false},{"id":2,"title":"Appeler le plombier","description":"Appeler le plombier pour faire réparer le robinet","completed":false},{"id":3,"title":"Acheter raquette de ping pong","description":"Aller à Decathlon pour acheter une raquette de ping pong pour Adam","status":"pending"},{"id":4,"title":"test","description":"test","status":"pending"}]
+{
+    "tasks": [
+        {
+            "id": 1,
+            "title": "Acheter du lait",
+            "description": "Aller au supermarché et acheter du lait",
+            "completed": "false"
+        },
+        {
+            "id": 2,
+            "title": "Promener le chien",
+            "description": "Sortir le chien pour une promenade de 30 minutes",
+            "completed": "false"
+        },
+        {
+            "id": 3,
+            "title": "Nettoyer la cuisine",
+            "description": "Faire la vaisselle et nettoyer les plans de travail",
+            "completed": "false"
+        },
+        {
+            "id": 4,
+            "title": "Laver la voiture",
+            "description": "Aller à la station de lavage pour nettoyer l'extérieur de la voiture",
+            "completed": "false"
+        },
+        {
+            "id": 5,
+            "title": "Passer l'aspirateur",
+            "description": "Aspirer toute la maison, y compris les tapis et les moquettes",
+            "completed": "false"
+        },
+        {
+            "id": 6,
+            "title": "Faire les courses",
+            "description": "Acheter des provisions pour la semaine au supermarché",
+            "completed": "false"
+        },
+        {
+            "id": 7,
+            "title": "Arroser les plantes",
+            "description": "Arroser les plantes d'intérieur et du jardin",
+            "completed": "false"
+        },
+        {
+            "id": 8,
+            "title": "Payer les factures",
+            "description": "Payer les factures d'électricité, d'eau et d'internet",
+            "completed": "false"
+        },
+        {
+            "id": 9,
+            "title": "Appeler le plombier",
+            "description": "Prendre rendez-vous avec le plombier pour réparer la fuite",
+            "completed": "false"
+        },
+        {
+            "id": 10,
+            "title": "Préparer le dîner",
+            "description": "Cuisiner un repas pour la famille",
+            "completed": "false"
+        }
+    ]
+}

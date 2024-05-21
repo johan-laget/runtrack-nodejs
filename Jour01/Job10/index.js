@@ -1,17 +1,18 @@
-const { URL } = require('url');
+const url = require('url');
+const URL = "https://www.google.com/search?q=nodejs";
 
-const URLString = "https://www.google.com/search?q=nodejs";
+const parsedUrl = new url.URL(URL);
 
-const parsedURL = new URL(URLString);
+const protocol = parsedUrl.protocol;
+const hostName = parsedUrl.hostName;
+const searchParams = parsedUrl.searchParams;
 
-let protocol = parsedURL.protocol;
-let hostname = parsedURL.hostname;
-let pathname = parsedURL.pathname;
-let searchParams = parsedURL.searchParams;
+console.log(`Protocole: ${protocol}`);
+console.log(`Nom d'hôte: ${hostName}`);
+console.log(`Paramètres de recherche: ${searchParams}`);
 
-hostname = "www.laplateforme.io";
-searchParams.set('lang', 'fr');
+parsedUrl.hostName = 'www.laplateforme.io';
 
-const newURL = protocol+"//"+hostname+pathname+"?"+searchParams.toString();
+parsedUrl.searchParams.append('new param','lang=fr');
 
-console.log("Nouvelle URL:", newURL);
+console.log(`Nouvelle URL: ${parsedUrl.toString()}`);
